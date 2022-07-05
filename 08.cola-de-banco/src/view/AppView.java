@@ -3,6 +3,7 @@ package view;
 import control.OficinaBancaria;
 import lib.sRAD_java.gui.component.Resource;
 import lib.sRAD_java.gui.sComponent.SButton;
+import lib.sRAD_java.gui.sComponent.SLabel;
 import lib.sRAD_java.gui.sComponent.STextArea;
 import model.ColaBanco;
 
@@ -23,7 +24,12 @@ public class AppView extends JFrame {
 
         add(pCola);
 
+        loadBackground();
         loadProperties();
+    }
+    private void loadBackground() {
+        JLabel background = new SLabel(0, 0, new ImageIcon("public/background.jpg"));
+        getContentPane().add(background);
     }
     private void addJLabels() {
         JLabel lCola = new JLabel("Cola");

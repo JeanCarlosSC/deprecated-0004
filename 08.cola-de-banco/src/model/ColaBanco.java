@@ -6,7 +6,7 @@ public class ColaBanco {
 
     private Nodo cajero = new Nodo(0);
     public Nodo inicioCola, finalCola;
-    String Cola = "";
+    String cola = "";
 
     public ColaBanco() {
         inicioCola = cajero;
@@ -60,23 +60,16 @@ public class ColaBanco {
     }
 
     //Metodo para mostrar contenido de la cola
-    public void mostrarContenido() {
+    public String getContent() {
         Nodo recorrido = inicioCola;
-        String colaInvertida = "0";
+        cola = "";
 
         while (recorrido != cajero) {
-            Cola += recorrido.id + "(" + recorrido.nTransacciones + ")" + " ";
+            cola = String.format("%s\n%12s      %12s", cola, ""+recorrido.id, ""+recorrido.nTransacciones);
             recorrido = recorrido.siguiente;
         }
 
-        String cadena[] = Cola.split(" ");
-
-        for (int i = cadena.length - 1; i >= 0; i--) {
-            colaInvertida += " " + cadena[cadena.length - 1 - i];
-        }
-
-        JOptionPane.showMessageDialog(null, colaInvertida);
-        Cola = "";
+        return cola;
     }
 
     /*

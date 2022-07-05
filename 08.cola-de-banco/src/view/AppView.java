@@ -1,42 +1,62 @@
 package view;
 
-import lib.Resource;
+import control.OficinaBancaria;
+import lib.sRAD_java.gui.component.Resource;
+import lib.sRAD_java.gui.sComponent.SButton;
+import lib.sRAD_java.gui.sComponent.STextArea;
+import model.ColaBanco;
 
 import javax.swing.*;
 import java.awt.*;
 
+import static lib.sRAD_java.gui.component.Resource.fontTitle;
+
 public class AppView extends JFrame {
-    public AppView() {
+    private OficinaBancaria banco;
+    private PCola pCola;
+    public AppView(OficinaBancaria oficinaBancaria) {
+        banco = oficinaBancaria;
+        pCola = new PCola();
+
         addJLabels();
         addJButtons();
 
-        add(new PCola());
+        add(pCola);
 
         loadProperties();
     }
     private void addJLabels() {
         JLabel lCola = new JLabel("Cola");
-        lCola.setBounds(32, 32, 200, 54);
-        lCola.setFont(Resource.fontTitle);
+        lCola.setBounds(62, 32, 200, 54);
+        lCola.setFont(fontTitle);
         add(lCola);
 
         JLabel lCajero = new JLabel("Cajero");
         lCajero.setBounds(532, 32, 200, 54);
-        lCajero.setFont(Resource.fontTitle);
+        lCajero.setFont(fontTitle);
         add(lCajero);
     }
     private void addJButtons() {
-        JButton btAtender = new JButton("Atender");
-        btAtender.setBounds(532,96, 100, 32);
+        JButton btAtender = new SButton(532,96, 100, 32, "Atender");
+        btAtender.addActionListener(e -> banco.atender());
         add(btAtender);
+
+        JButton btInsertar = new SButton(310, 610, 150, 32, "Insertar cliente");
+        btInsertar.addActionListener(e -> banco.insertarCliente());
+        add(btInsertar);
     }
     private void loadProperties() {
+        setTitle("Simulador de cola bancaria");
         getContentPane().setBackground(Color.WHITE);
         setLayout(null);
-        setSize(1280, 720);
+        setSize(720, 720);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
+    }
+
+    public void updateContent(ColaBanco cola) {
+        pCola.updateContent(cola);
     }
 }
 
@@ -47,7 +67,7 @@ class PCola extends JScrollPane {
     public PCola() {
         initContent();
         updateContent();
-        setBounds(32, 96, 400, 500);
+        setBounds(62, 96, 400, 500);
         setBorder(Resource.blackBorderTransparent);
     }
     private void initContent() {
@@ -67,8 +87,15 @@ class PCola extends JScrollPane {
         setViewportView(content);
     }
     public void updateContent() {
+        content.removeAll();
         content.add(lID);
         content.add(lTransacciones);
+    }
+    public void updateContent(ColaBanco cola) {
+        updateContent();
+        JTextArea text = new STextArea(32, 50, 400, 440, cola.getContent());
+        content.add(text);
+        repaint();
     }
 
 }

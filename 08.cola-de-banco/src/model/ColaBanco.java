@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class ColaBanco {
 
-    private Nodo cajero = new Nodo(0);
+    private final Nodo cajero = new Nodo(0);
     public Nodo inicioCola, finalCola;
     String cola = "";
 
@@ -14,11 +14,7 @@ public class ColaBanco {
     }
 
     public boolean ColaVacia() {
-        if (inicioCola == cajero) {
-            return true;
-        } else {
-            return false;
-        }
+        return inicioCola == cajero;
     }
 
     //Metodo para insertar en la cola
@@ -28,11 +24,10 @@ public class ColaBanco {
 
         if (ColaVacia()) {
             inicioCola = nuevo_nodo;
-            finalCola = nuevo_nodo;
         } else {
             finalCola.siguiente = nuevo_nodo;
-            finalCola = nuevo_nodo;
         }
+        finalCola = nuevo_nodo;
     }
 
     //Metodo para extraer en la cola
@@ -72,40 +67,4 @@ public class ColaBanco {
         return cola;
     }
 
-    /*
-    private ArrayList <model.Nodo> fifobanco = new ArrayList();
-    
-    public int tamaño(){
-       return fifobanco.size();
-    }
-    
-    void offer (model.Nodo o){
-        fifobanco.add(o);
-    }
-    
-    public model.Nodo peek (){
-        if (!(fifobanco.isEmpty())) {
-            return fifobanco.get(0);
-        }else{
-            return null;
-        }
-    }
-    
-    public model.Nodo poll(){
-        if (!(fifobanco.isEmpty())) {
-            model.Nodo o = fifobanco.get(0);
-            if (!(o.nTransacciones<=4)) {
-                fifobanco.remove(o);
-                o.nTransacciones-=4;
-                offer(o);
-                return (o);
-            }else{
-            fifobanco.remove(o);
-            return o;
-            }
-        }else{
-            return null;
-        }
-    }
-     */
 }

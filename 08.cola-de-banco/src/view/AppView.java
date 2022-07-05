@@ -1,20 +1,20 @@
 package view;
 
 import control.OficinaBancaria;
-import lib.sRAD_java.gui.component.Resource;
-import lib.sRAD_java.gui.sComponent.SButton;
-import lib.sRAD_java.gui.sComponent.SLabel;
-import lib.sRAD_java.gui.sComponent.STextArea;
+import view.component.Resource;
+import view.sComponent.SButton;
+import view.sComponent.SLabel;
+import view.sComponent.STextArea;
 import model.ColaBanco;
 
 import javax.swing.*;
 import java.awt.*;
 
-import static lib.sRAD_java.gui.component.Resource.fontTitle;
+import static view.component.Resource.fontTitle;
 
 public class AppView extends JFrame {
-    private OficinaBancaria banco;
-    private PCola pCola;
+    private final OficinaBancaria banco;
+    private final PCola pCola;
     public AppView(OficinaBancaria oficinaBancaria) {
         banco = oficinaBancaria;
         pCola = new PCola();

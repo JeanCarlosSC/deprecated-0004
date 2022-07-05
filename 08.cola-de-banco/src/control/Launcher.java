@@ -1,6 +1,6 @@
 package control;
 
-import lib.sRAD_java.gui.component.Theme;
+import view.component.Theme;
 
 public class Launcher {
     public static void main(String[] args) {

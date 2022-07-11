@@ -6,7 +6,7 @@ public class ColaBanco {
 
     private final Nodo cajero = new Nodo(0);
     public Nodo inicioCola, finalCola;
-    String cola = "";
+    private String cola = "";
 
     public ColaBanco() {
         inicioCola = cajero;
@@ -17,7 +17,7 @@ public class ColaBanco {
         return inicioCola == cajero;
     }
 
-    //Metodo para insertar en la cola
+    // metodo para insertar en la cola
     public void insertar(Nodo nodo) {
         Nodo nuevo_nodo = nodo;
         nuevo_nodo.siguiente = cajero;
@@ -30,7 +30,7 @@ public class ColaBanco {
         finalCola = nuevo_nodo;
     }
 
-    //Metodo para extraer en la cola
+    // metodo para extraer en la cola
     public Nodo extraer() {
         if (!ColaVacia()) {
             Nodo informacion = inicioCola;

@@ -1,14 +1,28 @@
 package view;
 
+import control.AppController;
 import sRAD_java.gui.sComponent.STable;
 
 import javax.swing.*;
 import java.util.ArrayList;
 
-public class AppView extends JFrame {
-    public AppView() {
-        ArrayList<ArrayList<String>> datos = new ArrayList<>();
+public abstract class AppView extends JFrame {
+    private AppController appController;
+    private STable table;
+    public AppView(AppController appController) {
+        this.appController = appController;
 
+        updateGUI();
+        loadProperties();
+    }
+
+    private void handleAdd() {
+        insertarDato("A", "1", "1");
+        updateGUI();
+    }
+
+    public abstract void insertarDato(String proceso, String tDeLlegada, String rafaga);
+    private void updateGUI() {
         ArrayList<String> header = new ArrayList<>();
         header.add("Proceso");
         header.add("T. de llegada");
@@ -18,37 +32,15 @@ public class AppView extends JFrame {
         header.add("T. de retorno");
         header.add("T. de espera");
 
-       ArrayList<String> prueba2 = new ArrayList<>();
-        prueba2.add("Proceso");
-        prueba2.add("T. de llegada");
-        prueba2.add("Ráfaga");
-        prueba2.add("T. de comienzo");
-        prueba2.add("T. de final");
-        prueba2.add("T. de retorno");
-        prueba2.add("T. de espera");
-
+        ArrayList<ArrayList<String>> datos = new ArrayList<>();
         datos.add(header);
-        datos.add(prueba2);
-        datos.add(prueba2);
-        datos.add(prueba2);
-        datos.add(prueba2);
-        datos.add(prueba2);
-        datos.add(prueba2);
-        datos.add(prueba2);
-        datos.add(prueba2);
-        datos.add(prueba2);
-        datos.add(prueba2);
-        datos.add(prueba2);
-        datos.add(prueba2);
-        datos.add(prueba2);
-        datos.add(prueba2);
-        datos.add(prueba2);
-        datos.add(prueba2);
-        datos.add(prueba2);
 
-        STable table = new STable(32, 32, 722, 300, datos);
+        for (ArrayList<String> dato: appController.getDatos()) {
+            datos.add(dato);
+        }
+
+        table = new STable(32, 32, 722, 300, datos);
         add(table);
-        loadProperties();
     }
 
     private void loadProperties() {

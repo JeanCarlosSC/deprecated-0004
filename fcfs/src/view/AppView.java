@@ -1,8 +1,12 @@
 package view;
 
 import control.AppController;
+
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JTable;
+
+import model.Proceso;
 import sRAD_java.gui.sComponent.SFrame;
 import sRAD_java.gui.sComponent.SLabel;
 import sRAD_java.gui.sComponent.STable;
@@ -60,8 +64,6 @@ public class AppView extends SFrame{
     private void updateTables() {
         if(tDatos!=null) {
             remove(tDatos);
-            remove(tEjecucion);
-            remove(tBloqueados);
         }
 
         // datos
@@ -72,29 +74,16 @@ public class AppView extends SFrame{
             datos.add(dato);
         }
 
-        tDatos = new STable(32, 62, 1194, 130, datos, 170, 28);
+        tDatos = new STable(32, 62, 1194, 130, datos, 169, 18);
         add(tDatos);
 
-        // lista de bloqueos
-        ArrayList<ArrayList<String>> bloqueados = new ArrayList<>();
-        bloqueados.add(bloqueadosHeader);
-
-        tBloqueados = new STable(32, 232, 585, 110, bloqueados, 140, 32);
-        add(tBloqueados);
-
-        // lista de ejecucion
-        ArrayList<ArrayList<String>> enEjecucion = new ArrayList<>();
-        enEjecucion.add(ejecucionHeader);
-
-        tEjecucion = new STable(647, 232, 585, 110, enEjecucion, 140, 32);
-        add(tEjecucion);
     }
     
     private void loadLabels() {
         SLabel lDatos = new SLabel(40, 30, 200, 32, "Datos");
         add(lDatos);
         
-        SLabel lListaDeEspera = new SLabel(40, 200, 200, 32, "Lista de espera");
+        SLabel lListaDeEspera = new SLabel(40, 200, 200, 32, "Lista de bloqueados");
         add(lListaDeEspera);
         
         SLabel lEjecucion = new SLabel(655, 200, 200, 32, "Ejecución");
@@ -106,5 +95,42 @@ public class AppView extends SFrame{
         SLabel lAdd = new SLabel(40, 620, 200, 32, "Añadir");
         add(lAdd);
     }
-    
+
+    public void step() {
+        if(tBloqueados!=null) {
+            remove(tBloqueados);
+            remove(tEjecucion);
+        }
+
+        // lista de bloqueos
+        ArrayList<ArrayList<String>> bloqueados = new ArrayList<>();
+        bloqueados.add(bloqueadosHeader);
+
+        for (ArrayList<String> dato: appController.getBloqueados()) {
+            bloqueados.add(dato);
+        }
+
+        tBloqueados = new STable(32, 232, 585, 110, bloqueados, 140, 18);
+        add(tBloqueados);
+
+        // lista de ejecucion
+        ArrayList<ArrayList<String>> datosEnEjecucion = new ArrayList<>();
+        datosEnEjecucion.add(ejecucionHeader);
+
+        Proceso enEjecucion = appController.getEnEjecucion();
+        if(enEjecucion != null) {
+            ArrayList<String> dato = new ArrayList<>();
+            dato.add(enEjecucion.getNombre());
+            dato.add(enEjecucion.getTiempoDeLLegada()+"");
+            dato.add(enEjecucion.getRafaga()+"");
+            dato.add(enEjecucion.getTiempoDeComienzo()+"");
+            dato.add(enEjecucion.getTiempoFinal()+"");
+            dato.add(enEjecucion.getTiempoDeRetorno()+"");
+            dato.add(enEjecucion.getTiempoDeEspera()+"");
+            datosEnEjecucion.add(dato);
+        }
+
+        tEjecucion = new STable(647, 232, 585, 110, datosEnEjecucion, 140, 18);
+        add(tEjecucion);
+    }
 }

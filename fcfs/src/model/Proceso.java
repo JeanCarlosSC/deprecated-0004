@@ -46,4 +46,32 @@ public class Proceso {
     public int getTiempoDeEspera() {
         return tiempoDeEspera;
     }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setTiempoDeLLegada(int tiempoDeLLegada) {
+        this.tiempoDeLLegada = tiempoDeLLegada;
+    }
+
+    public void setRafaga(int rafaga) {
+        this.rafaga = rafaga;
+    }
+
+    public void setTiempoDeComienzo(int tiempoDeComienzo) {
+        this.tiempoDeComienzo = tiempoDeComienzo;
+    }
+
+    public void setTiempoFinal(int tiempoFinal) {
+        this.tiempoFinal = tiempoFinal;
+    }
+
+    public void setTiempoDeRetorno(int tiempoDeRetorno) {
+        this.tiempoDeRetorno = tiempoDeRetorno;
+    }
+
+    public void setTiempoDeEspera(int tiempoDeEspera) {
+        this.tiempoDeEspera = tiempoDeEspera;
+    }
 }

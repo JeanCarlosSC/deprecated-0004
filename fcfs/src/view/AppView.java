@@ -1,75 +1,110 @@
 package view;
 
 import control.AppController;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
+import java.util.ArrayList;
 import javax.swing.JTable;
+import sRAD_java.gui.sComponent.SFrame;
+import sRAD_java.gui.sComponent.SLabel;
+import sRAD_java.gui.sComponent.STable;
 
-public class AppView extends JFrame{
-    private AppController controller;
+public class AppView extends SFrame{
+    private AppController appController;
     private Gantt gantt;
-    
+
+    // table headers
+    private ArrayList<String> datosHeader;
+    private ArrayList<String> bloqueadosHeader;
+    private ArrayList<String> ejecucionHeader;
+    private STable tDatos;
+    private STable tBloqueados;
+    private STable tEjecucion;
+       
     public AppView(AppController controller) {
-        this.controller = controller;
+        super(1280, 720, "First Come First Served");
+        this.appController = controller;
         
         gantt = new Gantt(this);
         add(gantt);
         
+        datosHeader = new ArrayList<>();
+        datosHeader.add("Proceso");
+        datosHeader.add("T. de llegada");
+        datosHeader.add("Ráfaga");
+        datosHeader.add("T. de comienzo");
+        datosHeader.add("T. de final");
+        datosHeader.add("T. de retorno");
+        datosHeader.add("T. de espera");
+
+        bloqueadosHeader = new ArrayList<>();
+        bloqueadosHeader.add("Proceso");
+        bloqueadosHeader.add("T. de llegada");
+        bloqueadosHeader.add("Ráfaga");
+        bloqueadosHeader.add("T. de espera");
+
+        ejecucionHeader = new ArrayList<>();
+        ejecucionHeader.add("Proceso");
+        ejecucionHeader.add("T. de llegada");
+        ejecucionHeader.add("Ráfaga");
+        ejecucionHeader.add("T. de espera");
+
+
+        updateGUI();
+    }
+
+    public void updateGUI() {
         loadLabels();
-        loadTables();
-        loadProperties();
+        updateTables();
+        repaint();
     }
     
-    private void loadTables() {
-        String[][] datosValues = {
-            {"0", "0", "0"},
-            {"0", "0", "0"}
-        };
-        String[] datosNames = { "Proceso", "Tiempo de llegada", "Ráfaga"};
-        JTable tDatos = new JTable(datosValues, datosNames);
-        
-        JScrollPane spDatos = new JScrollPane(tDatos);
-        spDatos.setBounds(32, 62, 1200, 110);
-        add(spDatos);
-        
-        JTable tListaDeEspera = new JTable();
-        tListaDeEspera.setBounds(32, 232, 585, 110);
-        add(tListaDeEspera);
-        
-        JTable tListaDeEjecucion = new JTable();
-        tListaDeEjecucion.setBounds(647, 232, 585, 110);
-        add(tListaDeEjecucion);
+    private void updateTables() {
+        if(tDatos!=null) {
+            remove(tDatos);
+            remove(tEjecucion);
+            remove(tBloqueados);
+        }
+
+        // datos
+        ArrayList<ArrayList<String>> datos = new ArrayList<>();
+        datos.add(datosHeader);
+
+        for (ArrayList<String> dato: appController.getDatos()) {
+            datos.add(dato);
+        }
+
+        tDatos = new STable(32, 62, 1194, 130, datos, 170, 28);
+        add(tDatos);
+
+        // lista de bloqueos
+        ArrayList<ArrayList<String>> bloqueados = new ArrayList<>();
+        bloqueados.add(bloqueadosHeader);
+
+        tBloqueados = new STable(32, 232, 585, 110, bloqueados, 140, 32);
+        add(tBloqueados);
+
+        // lista de ejecucion
+        ArrayList<ArrayList<String>> enEjecucion = new ArrayList<>();
+        enEjecucion.add(ejecucionHeader);
+
+        tEjecucion = new STable(647, 232, 585, 110, enEjecucion, 140, 32);
+        add(tEjecucion);
     }
     
     private void loadLabels() {
-        JLabel lDatos = new JLabel("Datos");
-        lDatos.setBounds(40, 30, 200, 32);
+        SLabel lDatos = new SLabel(40, 30, 200, 32, "Datos");
         add(lDatos);
         
-        JLabel lListaDeEspera = new JLabel("Lista de espera");
-        lListaDeEspera.setBounds(40, 200, 200, 32);
+        SLabel lListaDeEspera = new SLabel(40, 200, 200, 32, "Lista de espera");
         add(lListaDeEspera);
         
-        JLabel lEjecucion = new JLabel("Ejecución");
-        lEjecucion.setBounds(655, 200, 200, 32);
+        SLabel lEjecucion = new SLabel(655, 200, 200, 32, "Ejecución");
         add(lEjecucion);
         
-        JLabel lGantt = new JLabel("Gantt");
-        lGantt.setBounds(40, 360, 200, 32);
+        SLabel lGantt = new SLabel(40, 360, 200, 32, "Gantt");
         add(lGantt);
         
-        JLabel lAdd = new JLabel("Añadir");
-        lAdd.setBounds(40, 620, 200, 32);
+        SLabel lAdd = new SLabel(40, 620, 200, 32, "Añadir");
         add(lAdd);
     }
     
-    private void loadProperties() {
-        setTitle("First Come First Served");
-        setSize(1280, 720);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLayout(null);
-        setLocationRelativeTo(this);
-        setVisible(true);
-    }
 }

@@ -1,8 +1,6 @@
 package control;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -13,17 +11,17 @@ import view.AppView;
 public class AppController {
     private AppView view;
     private ArrayList<ArrayList<String>> datos;
-    private ArrayList<Proceso> procesos;
+    private ArrayList<Proceso> processes;
     private Proceso enEjecucion;
-    private ArrayList<Proceso> enBloqueo;
-    private int time;
+    private ArrayList<Proceso> blockList;
+    private int currentTime;
     private boolean isWorking;
     
     public AppController() {
         enEjecucion = null;
-        procesos = new ArrayList<>();
+        processes = new ArrayList<>();
         datos = new ArrayList<>();
-        enBloqueo = new ArrayList<>();
+        blockList = new ArrayList<>();
         isWorking = true;
         showGUI();
 
@@ -42,21 +40,16 @@ public class AppController {
     }
 
     private void iniciarSimulacion() {
-        time = 0;
+        currentTime = 0;
         while(isWorking) {
-            // agregar a bloqueo
-            for (Proceso proceso: procesos) {
-                if(proceso.getTiempoDeLLegada()==time) {
-                    enBloqueo.add(proceso);
-                }
-            }
+            addToBlockList();
 
             // agregar a ejecucion
-            for (Proceso proceso: procesos) {
+            for (Proceso proceso: processes) {
                 if(enEjecucion == null) {
-                    if(!enBloqueo.isEmpty()) {
-                        enEjecucion = enBloqueo.get(0);
-                        enBloqueo.remove(0);
+                    if(!blockList.isEmpty()) {
+                        enEjecucion = blockList.get(0);
+                        blockList.remove(0);
                     }
                 }
             }
@@ -66,31 +59,39 @@ public class AppController {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            time ++;
+            currentTime++;
+        }
+    }
+
+    private void addToBlockList() {
+        for (Proceso process: processes) {
+            if(process.getTiempoDeLLegada() == currentTime) {
+                blockList.add(process);
+            }
         }
     }
 
     private void actualizarDatos() {
         int tiempoDeComienzoSiguiente = 0;
 
-        Collections.sort(procesos, Comparator.comparing(Proceso::getTiempoDeLLegada));
+        Collections.sort(processes, Comparator.comparing(Proceso::getTiempoDeLLegada));
 
-        for(int i=0; i<procesos.size(); i++) {
-            procesos.get(i).setTiempoDeComienzo(Math.max(tiempoDeComienzoSiguiente, procesos.get(i).getTiempoDeLLegada()));
-            procesos.get(i).setTiempoFinal(procesos.get(i).getTiempoDeComienzo() + procesos.get(i).getRafaga());
-            procesos.get(i).setTiempoDeRetorno(procesos.get(i).getTiempoFinal() - procesos.get(i).getTiempoDeLLegada());
-            procesos.get(i).setTiempoDeEspera(procesos.get(i).getTiempoDeRetorno() - procesos.get(i).getRafaga());
+        for(int i = 0; i< processes.size(); i++) {
+            processes.get(i).setTiempoDeComienzo(Math.max(tiempoDeComienzoSiguiente, processes.get(i).getTiempoDeLLegada()));
+            processes.get(i).setTiempoFinal(processes.get(i).getTiempoDeComienzo() + processes.get(i).getRafaga());
+            processes.get(i).setTiempoDeRetorno(processes.get(i).getTiempoFinal() - processes.get(i).getTiempoDeLLegada());
+            processes.get(i).setTiempoDeEspera(processes.get(i).getTiempoDeRetorno() - processes.get(i).getRafaga());
 
-            tiempoDeComienzoSiguiente = procesos.get(i).getTiempoFinal();
+            tiempoDeComienzoSiguiente = processes.get(i).getTiempoFinal();
 
-            ArrayList<String> dato= new ArrayList<>();
-            dato.add(procesos.get(i).getNombre());
-            dato.add(procesos.get(i).getTiempoDeLLegada()+"");
-            dato.add(procesos.get(i).getRafaga()+"");
-            dato.add(procesos.get(i).getTiempoDeComienzo()+"");
-            dato.add(procesos.get(i).getTiempoFinal()+"");
-            dato.add(procesos.get(i).getTiempoDeRetorno()+"");
-            dato.add(procesos.get(i).getTiempoDeEspera()+"");
+            ArrayList<String> dato = new ArrayList<>();
+            dato.add(processes.get(i).getNombre());
+            dato.add(processes.get(i).getTiempoDeLLegada()+"");
+            dato.add(processes.get(i).getRafaga()+"");
+            dato.add(processes.get(i).getTiempoDeComienzo()+"");
+            dato.add(processes.get(i).getTiempoFinal()+"");
+            dato.add(processes.get(i).getTiempoDeRetorno()+"");
+            dato.add(processes.get(i).getTiempoDeEspera()+"");
             datos.set(i, dato);
         }
         view.updateGUI();
@@ -105,7 +106,7 @@ public class AppController {
     }
 
     public void addProcess(Proceso proceso) {
-        procesos.add(proceso);
+        processes.add(proceso);
 
         ArrayList<String> dato = new ArrayList<>();
         dato.add(proceso.getNombre());
@@ -122,7 +123,7 @@ public class AppController {
 
     public ArrayList<ArrayList<String>> getBloqueados() {
         ArrayList<ArrayList<String>> arrayList = new ArrayList<>();
-        for (Proceso proceso: enBloqueo) {
+        for (Proceso proceso: blockList) {
             ArrayList<String> dato = new ArrayList<>();
             dato.add(proceso.getNombre());
             dato.add(proceso.getTiempoDeLLegada()+"");
@@ -138,5 +139,9 @@ public class AppController {
 
     public Proceso getEnEjecucion() {
         return enEjecucion;
+    }
+
+    public int getTiempo() {
+        return currentTime;
     }
 }

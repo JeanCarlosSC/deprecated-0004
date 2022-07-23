@@ -22,6 +22,7 @@ public class AppView extends SFrame{
     private STable tDatos;
     private STable tBloqueados;
     private STable tEjecucion;
+    private SLabel lAdd;
        
     public AppView(AppController controller) {
         super(1280, 720, "First Come First Served");
@@ -92,11 +93,12 @@ public class AppView extends SFrame{
         SLabel lGantt = new SLabel(40, 360, 200, 32, "Gantt");
         add(lGantt);
         
-        SLabel lAdd = new SLabel(40, 620, 200, 32, "Añadir");
+        lAdd = new SLabel(40, 620, 200, 32, "Tiempo");
         add(lAdd);
     }
 
     public void step() {
+        lAdd.setText("Tiempo: "+appController.getTiempo()+" s.");
         if(tBloqueados!=null) {
             remove(tBloqueados);
             remove(tEjecucion);
@@ -110,7 +112,7 @@ public class AppView extends SFrame{
             bloqueados.add(dato);
         }
 
-        tBloqueados = new STable(32, 232, 585, 110, bloqueados, 140, 18);
+        tBloqueados = new STable(32, 232, 570, 110, bloqueados, 140, 18);
         add(tBloqueados);
 
         // lista de ejecucion
@@ -130,7 +132,7 @@ public class AppView extends SFrame{
             datosEnEjecucion.add(dato);
         }
 
-        tEjecucion = new STable(647, 232, 585, 110, datosEnEjecucion, 140, 18);
+        tEjecucion = new STable(647, 232, 570, 110, datosEnEjecucion, 140, 18);
         add(tEjecucion);
     }
 }

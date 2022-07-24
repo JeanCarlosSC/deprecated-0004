@@ -17,9 +17,9 @@ public class AppView extends SFrame{
     private ArrayList<String> bloqueadosHeader;
     private ArrayList<String> ejecucionHeader;
     private TData tData;
-    private STable tBloqueados;
+    private TBlock tBlock;
     private STable tEjecucion;
-    private SLabel lAdd;
+    private SLabel lTime;
        
     public AppView(AppController controller) {
         super(1280, 720, "First Come First Served");
@@ -27,15 +27,10 @@ public class AppView extends SFrame{
         this.appController = controller;
 
         tData = new TData();
+        tBlock = new TBlock();
         
         gantt = new Gantt(this);
         add(gantt);
-
-        bloqueadosHeader = new ArrayList<>();
-        bloqueadosHeader.add("Proceso");
-        bloqueadosHeader.add("T. de llegada");
-        bloqueadosHeader.add("Ráfaga");
-        bloqueadosHeader.add("T. de espera");
 
         ejecucionHeader = new ArrayList<>();
         ejecucionHeader.add("Proceso");
@@ -48,17 +43,17 @@ public class AppView extends SFrame{
 
     public void updateGUI() {
         loadLabels();
-        updateTables();
+        updateTComponent(tData, appController.getDatos());
         repaint();
     }
     
-    private void updateTables() {
-        if(tData.getComponent() != null) {
-            remove(tData.getComponent());
+    private void updateTComponent(TComponent tComponent, ArrayList<ArrayList<String>> newData) {
+        if(tComponent.getComponent() != null) {
+            remove(tComponent.getComponent());
         }
 
-        tData.updateComponent(appController.getDatos());
-        add(tData.getComponent());
+        tComponent.updateComponent(newData);
+        add(tComponent.getComponent());
     }
     
     private void loadLabels() {
@@ -74,27 +69,19 @@ public class AppView extends SFrame{
         SLabel lGantt = new SLabel(40, 360, 200, 32, "Gantt");
         add(lGantt);
         
-        lAdd = new SLabel(40, 620, 200, 32, "Tiempo");
-        add(lAdd);
+        lTime = new SLabel(40, 620, 200, 32, "Tiempo");
+        add(lTime);
     }
 
     public void step() {
-        lAdd.setText("Tiempo: "+appController.getTiempo()+" s.");
-        if(tBloqueados!=null) {
-            remove(tBloqueados);
+        lTime.setText("Tiempo: "+appController.getTiempo()+" s.");
+
+        updateTComponent(tBlock, appController.getBloqueados());
+        //updateTComponent(tExecution, appController.getEnEjecucion());
+
+        if(tEjecucion!=null) {
             remove(tEjecucion);
         }
-
-        // lista de bloqueos
-        ArrayList<ArrayList<String>> bloqueados = new ArrayList<>();
-        bloqueados.add(bloqueadosHeader);
-
-        for (ArrayList<String> dato: appController.getBloqueados()) {
-            bloqueados.add(dato);
-        }
-
-        tBloqueados = new STable(32, 232, 570, 110, bloqueados, 140, 18);
-        add(tBloqueados);
 
         // lista de ejecucion
         ArrayList<ArrayList<String>> datosEnEjecucion = new ArrayList<>();

@@ -4,18 +4,15 @@ import sRAD_java.gui.sComponent.STable;
 
 import java.util.ArrayList;
 
-public class TData implements TComponent{
+public class TBlock implements TComponent{
     private STable sTable;
     private ArrayList<String> header;
 
-    public TData() {
+    public TBlock() {
         header = new ArrayList<>();
         header.add("Proceso");
         header.add("T. de llegada");
         header.add("Ráfaga");
-        header.add("T. de comienzo");
-        header.add("T. de final");
-        header.add("T. de retorno");
         header.add("T. de espera");
     }
 
@@ -28,9 +25,10 @@ public class TData implements TComponent{
             tContent.add(array);
         }
 
-        sTable = new STable(32, 62, 1194, 130, tContent, 169, 18);
+        sTable = new STable(32, 232, 570, 110, tContent, 140, 18);
     }
 
+    @Override
     public STable getComponent() {
         return sTable;
     }

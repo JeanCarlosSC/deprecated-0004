@@ -4,8 +4,7 @@ import sRAD_java.gui.sComponent.STable;
 
 import java.util.ArrayList;
 
-public class TBlock implements TComponent{
-    private STable sTable;
+public class TBlock extends TComponent{
     private ArrayList<String> header;
 
     public TBlock() {
@@ -26,10 +25,5 @@ public class TBlock implements TComponent{
         }
 
         sTable = new STable(32, 232, 570, 110, tContent, 140, 18);
-    }
-
-    @Override
-    public STable getComponent() {
-        return sTable;
     }
 }

@@ -5,8 +5,6 @@ import sRAD_java.gui.sComponent.STable;
 import java.util.ArrayList;
 
 public class TData extends TComponent{
-    private ArrayList<String> header;
-
     public TData() {
         header = new ArrayList<>();
         header.add("Proceso");

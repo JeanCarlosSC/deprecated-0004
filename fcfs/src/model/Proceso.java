@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 public class Proceso {
     private String nombre;
     private int tiempoDeLLegada;
@@ -73,5 +75,17 @@ public class Proceso {
 
     public void setTiempoDeEspera(int tiempoDeEspera) {
         this.tiempoDeEspera = tiempoDeEspera;
+    }
+
+    public ArrayList<String> toArray() {
+        ArrayList array = new ArrayList();
+        array.add(nombre);
+        array.add(tiempoDeLLegada+"");
+        array.add(rafaga+"");
+        array.add(tiempoDeComienzo+"");
+        array.add(tiempoFinal+"");
+        array.add(tiempoDeRetorno+"");
+        array.add(tiempoDeEspera+"");
+        return array;
     }
 }

@@ -12,13 +12,9 @@ import sRAD_java.gui.sComponent.STable;
 public class AppView extends SFrame{
     private AppController appController;
     private Gantt gantt;
-
-    // table headers
-    private ArrayList<String> bloqueadosHeader;
-    private ArrayList<String> ejecucionHeader;
     private TData tData;
     private TBlock tBlock;
-    private STable tEjecucion;
+    private TExecution tExecution;
     private SLabel lTime;
        
     public AppView(AppController controller) {
@@ -28,15 +24,10 @@ public class AppView extends SFrame{
 
         tData = new TData();
         tBlock = new TBlock();
+        tExecution = new TExecution();
         
         gantt = new Gantt(this);
         add(gantt);
-
-        ejecucionHeader = new ArrayList<>();
-        ejecucionHeader.add("Proceso");
-        ejecucionHeader.add("T. de llegada");
-        ejecucionHeader.add("Ráfaga");
-        ejecucionHeader.add("T. de espera");
 
         updateGUI();
     }
@@ -55,7 +46,7 @@ public class AppView extends SFrame{
         tComponent.updateComponent(newData);
         add(tComponent.getComponent());
     }
-    
+
     private void loadLabels() {
         SLabel lDatos = new SLabel(40, 30, 200, 32, "Datos");
         add(lDatos);
@@ -77,30 +68,12 @@ public class AppView extends SFrame{
         lTime.setText("Tiempo: "+appController.getTiempo()+" s.");
 
         updateTComponent(tBlock, appController.getBloqueados());
-        //updateTComponent(tExecution, appController.getEnEjecucion());
+        updateTComponent(tExecution, toMatrix(appController.getEnEjecucion().toArray()));
+    }
 
-        if(tEjecucion!=null) {
-            remove(tEjecucion);
-        }
-
-        // lista de ejecucion
-        ArrayList<ArrayList<String>> datosEnEjecucion = new ArrayList<>();
-        datosEnEjecucion.add(ejecucionHeader);
-
-        Proceso enEjecucion = appController.getEnEjecucion();
-        if(enEjecucion != null) {
-            ArrayList<String> dato = new ArrayList<>();
-            dato.add(enEjecucion.getNombre());
-            dato.add(enEjecucion.getTiempoDeLLegada()+"");
-            dato.add(enEjecucion.getRafaga()+"");
-            dato.add(enEjecucion.getTiempoDeComienzo()+"");
-            dato.add(enEjecucion.getTiempoFinal()+"");
-            dato.add(enEjecucion.getTiempoDeRetorno()+"");
-            dato.add(enEjecucion.getTiempoDeEspera()+"");
-            datosEnEjecucion.add(dato);
-        }
-
-        tEjecucion = new STable(647, 232, 570, 110, datosEnEjecucion, 140, 18);
-        add(tEjecucion);
+    private ArrayList<ArrayList<String>> toMatrix(ArrayList<String> array) {
+        ArrayList<ArrayList<String>> matrix = new ArrayList<>();
+        matrix.add(array);
+        return matrix;
     }
 }

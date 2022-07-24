@@ -84,7 +84,9 @@ public class AppView extends SFrame{
 
     private ArrayList<ArrayList<String>> toMatrix(Proceso process) {
         ArrayList<ArrayList<String>> matrix = new ArrayList<>();
-        matrix.add(process.toArray());
+        if(process != null) {
+            matrix.add(process.toArray());
+        }
         return matrix;
     }
 

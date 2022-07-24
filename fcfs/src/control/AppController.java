@@ -43,16 +43,10 @@ public class AppController {
         currentTime = 0;
         while(isWorking) {
             addToBlockList();
+            deleteFromExecutionList();
+            addToExecutionList();
 
             // agregar a ejecucion
-            for (Proceso proceso: processes) {
-                if(enEjecucion == null) {
-                    if(!blockList.isEmpty()) {
-                        enEjecucion = blockList.get(0);
-                        blockList.remove(0);
-                    }
-                }
-            }
             view.step();
             try {
                 Thread.sleep(1000);
@@ -63,6 +57,17 @@ public class AppController {
         }
     }
 
+    private void deleteFromExecutionList() {
+        if(enEjecucion != null && enEjecucion.getTiempoFinal() == currentTime) {
+            enEjecucion = null;
+        }
+    }
+    private void addToExecutionList() {
+        if(enEjecucion == null && !blockList.isEmpty()) {
+            enEjecucion = blockList.get(0);
+            blockList.remove(0);
+        }
+    }
     private void addToBlockList() {
         for (Proceso process: processes) {
             if(process.getTiempoDeLLegada() == currentTime) {
@@ -94,6 +99,7 @@ public class AppController {
             dato.add(processes.get(i).getTiempoDeEspera()+"");
             datos.set(i, dato);
         }
+
         view.loadGUI();
     }
 

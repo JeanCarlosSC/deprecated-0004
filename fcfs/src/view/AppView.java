@@ -2,9 +2,7 @@ package view;
 
 import control.AppController;
 
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import javax.swing.JTable;
 
 import model.Proceso;
 import sRAD_java.gui.sComponent.SFrame;
@@ -16,29 +14,22 @@ public class AppView extends SFrame{
     private Gantt gantt;
 
     // table headers
-    private ArrayList<String> datosHeader;
     private ArrayList<String> bloqueadosHeader;
     private ArrayList<String> ejecucionHeader;
-    private STable tDatos;
+    private TData tData;
     private STable tBloqueados;
     private STable tEjecucion;
     private SLabel lAdd;
        
     public AppView(AppController controller) {
         super(1280, 720, "First Come First Served");
+
         this.appController = controller;
+
+        tData = new TData();
         
         gantt = new Gantt(this);
         add(gantt);
-        
-        datosHeader = new ArrayList<>();
-        datosHeader.add("Proceso");
-        datosHeader.add("T. de llegada");
-        datosHeader.add("Ráfaga");
-        datosHeader.add("T. de comienzo");
-        datosHeader.add("T. de final");
-        datosHeader.add("T. de retorno");
-        datosHeader.add("T. de espera");
 
         bloqueadosHeader = new ArrayList<>();
         bloqueadosHeader.add("Proceso");
@@ -52,7 +43,6 @@ public class AppView extends SFrame{
         ejecucionHeader.add("Ráfaga");
         ejecucionHeader.add("T. de espera");
 
-
         updateGUI();
     }
 
@@ -63,21 +53,12 @@ public class AppView extends SFrame{
     }
     
     private void updateTables() {
-        if(tDatos!=null) {
-            remove(tDatos);
+        if(tData.getComponent() != null) {
+            remove(tData.getComponent());
         }
 
-        // datos
-        ArrayList<ArrayList<String>> datos = new ArrayList<>();
-        datos.add(datosHeader);
-
-        for (ArrayList<String> dato: appController.getDatos()) {
-            datos.add(dato);
-        }
-
-        tDatos = new STable(32, 62, 1194, 130, datos, 169, 18);
-        add(tDatos);
-
+        tData.updateComponent(appController.getDatos());
+        add(tData.getComponent());
     }
     
     private void loadLabels() {

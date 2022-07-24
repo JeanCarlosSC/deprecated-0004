@@ -7,14 +7,17 @@ import java.util.ArrayList;
 import model.Proceso;
 import sRAD_java.gui.sComponent.SFrame;
 import sRAD_java.gui.sComponent.SLabel;
-import sRAD_java.gui.sComponent.STable;
 
 public class AppView extends SFrame{
-    private AppController appController;
-    private Gantt gantt;
+    private AppController appController; // reference
+    private Gantt gantt; // gantt diagram
+
+    // table
     private TData tData;
     private TBlock tBlock;
     private TExecution tExecution;
+
+    // label
     private SLabel lTime;
        
     public AppView(AppController controller) {
@@ -29,10 +32,10 @@ public class AppView extends SFrame{
         gantt = new Gantt(this);
         add(gantt);
 
-        updateGUI();
+        loadGUI();
     }
 
-    public void updateGUI() {
+    public void loadGUI() {
         loadLabels();
         updateTComponent(tData, appController.getDatos());
         repaint();
@@ -67,13 +70,22 @@ public class AppView extends SFrame{
     public void step() {
         lTime.setText("Tiempo: "+appController.getTiempo()+" s.");
 
-        updateTComponent(tBlock, appController.getBloqueados());
-        updateTComponent(tExecution, toMatrix(appController.getEnEjecucion().toArray()));
+        updateTComponent(tBlock, toMatrix(appController.getBloqueados()));
+        updateTComponent(tExecution, toMatrix(appController.getEnEjecucion()));
     }
 
-    private ArrayList<ArrayList<String>> toMatrix(ArrayList<String> array) {
+    private ArrayList<ArrayList<String>> toMatrix(ArrayList<Proceso> array) {
         ArrayList<ArrayList<String>> matrix = new ArrayList<>();
-        matrix.add(array);
+        for (Proceso process: array) {
+            matrix.add(process.toArray());
+        }
         return matrix;
     }
+
+    private ArrayList<ArrayList<String>> toMatrix(Proceso process) {
+        ArrayList<ArrayList<String>> matrix = new ArrayList<>();
+        matrix.add(process.toArray());
+        return matrix;
+    }
+
 }

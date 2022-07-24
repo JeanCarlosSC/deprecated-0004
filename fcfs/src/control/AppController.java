@@ -35,11 +35,11 @@ public class AppController {
     }
 
     private void run() {
-        actualizarDatos();
-        iniciarSimulacion();
+        updateData();
+        startSimulation();
     }
 
-    private void iniciarSimulacion() {
+    private void startSimulation() {
         currentTime = 0;
         while(isWorking) {
             addToBlockList();
@@ -71,7 +71,7 @@ public class AppController {
         }
     }
 
-    private void actualizarDatos() {
+    private void updateData() {
         int tiempoDeComienzoSiguiente = 0;
 
         Collections.sort(processes, Comparator.comparing(Proceso::getTiempoDeLLegada));
@@ -94,47 +94,25 @@ public class AppController {
             dato.add(processes.get(i).getTiempoDeEspera()+"");
             datos.set(i, dato);
         }
-        view.updateGUI();
+        view.loadGUI();
     }
 
     private void showGUI() {
         Theme.setDarkTheme();
         view = new AppView(this);
     }
+    public void addProcess(Proceso proceso) {
+        processes.add(proceso);
+        datos.add(proceso.toArray());
+        view.loadGUI();
+    }
+
     public ArrayList<ArrayList<String>> getDatos() {
         return datos;
     }
 
-    public void addProcess(Proceso proceso) {
-        processes.add(proceso);
-
-        ArrayList<String> dato = new ArrayList<>();
-        dato.add(proceso.getNombre());
-        dato.add(proceso.getTiempoDeLLegada()+ "");
-        dato.add(proceso.getRafaga()+ "");
-        dato.add(proceso.getTiempoDeComienzo()+ "");
-        dato.add(proceso.getTiempoFinal()+ "");
-        dato.add(proceso.getTiempoDeRetorno()+ "");
-        dato.add(proceso.getTiempoDeEspera()+ "");
-        datos.add(dato);
-
-        view.updateGUI();
-    }
-
-    public ArrayList<ArrayList<String>> getBloqueados() {
-        ArrayList<ArrayList<String>> arrayList = new ArrayList<>();
-        for (Proceso proceso: blockList) {
-            ArrayList<String> dato = new ArrayList<>();
-            dato.add(proceso.getNombre());
-            dato.add(proceso.getTiempoDeLLegada()+"");
-            dato.add(proceso.getRafaga()+"");
-            dato.add(proceso.getTiempoDeComienzo()+"");
-            dato.add(proceso.getTiempoFinal()+"");
-            dato.add(proceso.getTiempoDeRetorno()+"");
-            dato.add(proceso.getTiempoDeEspera()+"");
-            arrayList.add(dato);
-        }
-        return arrayList;
+    public ArrayList<Proceso> getBloqueados() {
+        return blockList;
     }
 
     public Proceso getEnEjecucion() {

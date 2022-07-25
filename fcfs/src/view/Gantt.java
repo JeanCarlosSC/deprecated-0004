@@ -36,7 +36,7 @@ public class Gantt extends JPanel{
             g.setColor(Resource.DTII5);
             g.drawLine(i*columnGap+30, 0, i*columnGap+30, 210);
             g.setColor(Resource.WHITE);
-            g.drawString(i+"", 30+i*columnGap, 4*40+40);
+            g.drawString(i+"", 32+i*columnGap, 4*40+35);
         }
 
         // content

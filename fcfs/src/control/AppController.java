@@ -10,19 +10,17 @@ import view.AppView;
 
 public class AppController {
     private AppView view;
-    private ArrayList<ArrayList<String>> datos;
-    private ArrayList<Proceso> processes;
+    private final ArrayList<ArrayList<String>> datos;
+    private final ArrayList<Proceso> processes;
     private Proceso enEjecucion;
-    private ArrayList<Proceso> blockList;
+    private final ArrayList<Proceso> blockList;
     private int currentTime;
-    private boolean isWorking;
-    
+
     public AppController() {
         enEjecucion = null;
         processes = new ArrayList<>();
         datos = new ArrayList<>();
         blockList = new ArrayList<>();
-        isWorking = true;
         showGUI();
 
         addProcess(new Proceso("A", 0, 8));
@@ -41,7 +39,7 @@ public class AppController {
 
     private void startSimulation() {
         currentTime = 0;
-        while(isWorking) {
+        while(currentTime < 100) {
             addToBlockList();
             deleteFromExecutionList();
             addToExecutionList();
@@ -78,7 +76,7 @@ public class AppController {
     private void updateData() {
         int tiempoDeComienzoSiguiente = 0;
 
-        Collections.sort(processes, Comparator.comparing(Proceso::getTiempoDeLLegada));
+        processes.sort(Comparator.comparing(Proceso::getTiempoDeLLegada));
 
         for(int i = 0; i< processes.size(); i++) {
             processes.get(i).setTiempoDeComienzo(Math.max(tiempoDeComienzoSiguiente, processes.get(i).getTiempoDeLLegada()));

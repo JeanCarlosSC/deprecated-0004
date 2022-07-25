@@ -3,9 +3,9 @@ package model;
 import java.util.ArrayList;
 
 public class Proceso {
-    private String nombre;
-    private int tiempoDeLLegada;
-    private int rafaga;
+    private final String nombre;
+    private final int tiempoDeLLegada;
+    private final int rafaga;
     private int tiempoDeComienzo;
     private int tiempoFinal;
     private int tiempoDeRetorno;
@@ -49,18 +49,6 @@ public class Proceso {
         return tiempoDeEspera;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public void setTiempoDeLLegada(int tiempoDeLLegada) {
-        this.tiempoDeLLegada = tiempoDeLLegada;
-    }
-
-    public void setRafaga(int rafaga) {
-        this.rafaga = rafaga;
-    }
-
     public void setTiempoDeComienzo(int tiempoDeComienzo) {
         this.tiempoDeComienzo = tiempoDeComienzo;
     }
@@ -77,7 +65,7 @@ public class Proceso {
         this.tiempoDeEspera = tiempoDeEspera;
     }
 
-    public ArrayList<String> toArray() {
+    public ArrayList toArray() {
         ArrayList array = new ArrayList();
         array.add(nombre);
         array.add(tiempoDeLLegada+"");

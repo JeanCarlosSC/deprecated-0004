@@ -46,7 +46,6 @@ public class AppController {
             deleteFromExecutionList();
             addToExecutionList();
 
-            // agregar a ejecucion
             view.step();
             try {
                 Thread.sleep(1000);
@@ -127,5 +126,9 @@ public class AppController {
 
     public int getTiempo() {
         return currentTime;
+    }
+
+    public ArrayList<Proceso> getProcesses() {
+        return processes;
     }
 }

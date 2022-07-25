@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import model.Proceso;
 import sRAD_java.gui.sComponent.SFrame;
 import sRAD_java.gui.sComponent.SLabel;
+import sRAD_java.gui.sComponent.SScrollPane;
 
 public class AppView extends SFrame{
     private AppController appController; // reference
@@ -29,8 +30,10 @@ public class AppView extends SFrame{
         tBlock = new TBlock();
         tExecution = new TExecution();
         
-        gantt = new Gantt(this);
-        add(gantt);
+        gantt = new Gantt(this, appController);
+
+        SScrollPane sGantt = new SScrollPane(32, 400, 1200, 205, gantt);
+        add(sGantt);
 
         loadGUI();
     }
@@ -72,6 +75,7 @@ public class AppView extends SFrame{
 
         updateTComponent(tBlock, toMatrix(appController.getBloqueados()));
         updateTComponent(tExecution, toMatrix(appController.getEnEjecucion()));
+        gantt.updateUI(appController);
     }
 
     private ArrayList<ArrayList<String>> toMatrix(ArrayList<Proceso> array) {

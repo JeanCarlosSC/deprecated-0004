@@ -50,8 +50,21 @@ public class AppView extends SFrame{
         String[] options = new String[3];
         options[0] = "FCFS";
         options[1] = "SJF";
-        options[2] = "another";
+        options[2] = "RR";
         SComboBox comboBox = new SComboBox(SComboBox.DECORADO, 736, 670, 100, 32, options);
+        comboBox.addActionListener(e -> {
+            switch (comboBox.getSelectedIndex()) {
+                case 1:
+                    appController.setMethod(1);
+                    break;
+                case 2:
+                    appController.setMethod(2);
+                    break;
+                default:
+                    appController.setMethod(0);
+                    break;
+            }
+        });
         add(comboBox);
     }
 
@@ -102,13 +115,17 @@ public class AppView extends SFrame{
         
         SLabel lGantt = new SLabel(40, 360, 200, 32, "Gantt");
         add(lGantt);
-        
+
+        if(lTime != null) {
+            remove(lTime);
+        }
         lTime = new SLabel(40, 660, 200, 32, "Tiempo");
         add(lTime);
     }
 
     public void step() {
         lTime.setText("Tiempo: "+appController.getTiempo()+" s.");
+        repaint();
 
         updateTComponent(tBlock, toMatrix(appController.getBloqueados()));
         updateTComponent(tExecution, toMatrix(appController.getEnEjecucion()));

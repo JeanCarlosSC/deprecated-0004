@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import model.Method;
 import model.Proceso;
 import sRAD_java.gui.component.Theme;
 import view.AppView;
@@ -16,6 +17,7 @@ public class AppController {
     private ArrayList<Proceso> blockList;
     private int currentTime;
     private boolean isEjecutando;
+    private Method method;
 
     public AppController() {
         enEjecucion = null;
@@ -23,6 +25,7 @@ public class AppController {
         datos = new ArrayList<>();
         blockList = new ArrayList<>();
         isEjecutando = false;
+        method = Method.FCFS;
         showGUI();
 
         addProcess(new Proceso("A", 0, 8));
@@ -86,6 +89,55 @@ public class AppController {
     }
 
     public void updateData() {
+        if(method == Method.FCFS) {
+            updateDataFCFS();
+        }
+        else if(method == Method.SJF) {
+            updateDataSJF();
+        }
+        else {
+            updateDataRR();
+        }
+    }
+
+    private void updateDataRR() {
+
+    }
+
+    private void updateDataSJF() {
+        int tiempoDeComienzoSiguiente = 0;
+
+        ArrayList<Proceso> procesos= (ArrayList) processes.clone();
+        procesos.sort(Comparator.comparing(Proceso::getTiempoDeLLegada));
+
+        for(int i = 0; i< processes.size(); i++) {
+            if(i != 0) {
+                procesos.remove(0);
+            }
+            if(i == 1) {
+                procesos.sort(Comparator.comparing(Proceso::getRafaga));
+            }
+            procesos.get(0).setTiempoDeComienzo(Math.max(tiempoDeComienzoSiguiente, procesos.get(0).getTiempoDeLLegada()));
+            procesos.get(0).setTiempoFinal(procesos.get(0).getTiempoDeComienzo() + procesos.get(0).getRafaga());
+            procesos.get(0).setTiempoDeRetorno(procesos.get(0).getTiempoFinal() - procesos.get(0).getTiempoDeLLegada());
+            procesos.get(0).setTiempoDeEspera(procesos.get(0).getTiempoDeRetorno() - procesos.get(0).getRafaga());
+
+            tiempoDeComienzoSiguiente = procesos.get(0).getTiempoFinal();
+
+            ArrayList<String> dato = new ArrayList<>();
+            dato.add(procesos.get(0).getNombre());
+            dato.add(procesos.get(0).getTiempoDeLLegada()+"");
+            dato.add(procesos.get(0).getRafaga()+"");
+            dato.add(procesos.get(0).getTiempoDeComienzo()+"");
+            dato.add(procesos.get(0).getTiempoFinal()+"");
+            dato.add(procesos.get(0).getTiempoDeRetorno()+"");
+            dato.add(procesos.get(0).getTiempoDeEspera()+"");
+            datos.set(i, dato);
+        }
+
+        view.loadGUI();
+    }
+    private void updateDataFCFS() {
         int tiempoDeComienzoSiguiente = 0;
 
         processes.sort(Comparator.comparing(Proceso::getTiempoDeLLegada));
@@ -140,5 +192,20 @@ public class AppController {
 
     public ArrayList<Proceso> getProcesses() {
         return processes;
+    }
+
+    public void setMethod(int i) {
+        switch (i) {
+            case 1:
+                method = Method.SJF;
+                break;
+            case 2:
+                method = Method.RR;
+                break;
+            default:
+                method = Method.FCFS;
+                break;
+        }
+        new Thread(() -> run()).start();
     }
 }

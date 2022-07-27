@@ -85,7 +85,7 @@ public class AppController {
         }
     }
 
-    private void updateData() {
+    public void updateData() {
         int tiempoDeComienzoSiguiente = 0;
 
         processes.sort(Comparator.comparing(Proceso::getTiempoDeLLegada));

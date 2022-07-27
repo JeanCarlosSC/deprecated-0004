@@ -45,15 +45,25 @@ public class Gantt extends SPanel {
 
         for (int i=0; i<processes.size(); i++) {
             Proceso p = processes.get(i);
-            g.drawString(p.getNombre(), 10, i*rowGap+40);
+
+            int y = i*rowGap+35;
+            for (int j = 0; j < processes.size(); j++) {
+                if(processes.get(j).getNombre().equals(p.getNombre()) && j!=i && j<i) {
+                    y = j*rowGap+35;
+                    break;
+                }
+            }
+            if (y == i*rowGap+35) {
+                g.drawString(p.getNombre(), 10, i * rowGap + 40);
+            }
 
             g.setColor(new Color((i*20)%100+150,(i*50)%100+150,(i*50+50)%100+150));
             if (p.getTiempoDeLLegada()<time) {
-                g.drawLine(p.getTiempoDeLLegada()*columnGap+30,i*rowGap+35,
-                        Math.min(time, p.getTiempoDeComienzo())*columnGap+30, i*rowGap+35);
+                g.drawLine(p.getTiempoDeLLegada()*columnGap+30,y,
+                        Math.min(time, p.getTiempoDeComienzo())*columnGap+30, y);
             }
             if (p.getTiempoDeComienzo()<time) {
-                g.fillRect(p.getTiempoDeComienzo()*columnGap+30,i*rowGap+30,
+                g.fillRect(p.getTiempoDeComienzo()*columnGap+30,y-5,
                         Math.min(time-p.getTiempoDeComienzo(), p.getRafaga())*columnGap, 10);
             }
         }

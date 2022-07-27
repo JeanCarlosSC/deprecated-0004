@@ -12,7 +12,8 @@ import view.AppView;
 public class AppController {
     private AppView view;
     private final ArrayList<ArrayList<String>> datos;
-    private final ArrayList<Proceso> processes;
+    private ArrayList<Proceso> processes;
+    private ArrayList<Proceso> processesBackup;
     private Proceso enEjecucion;
     private ArrayList<Proceso> blockList;
     private int currentTime;
@@ -101,7 +102,46 @@ public class AppController {
     }
 
     private void updateDataRR() {
+        processesBackup = (ArrayList<Proceso>) processes.clone();
+        int tiempoDeComienzoSiguiente = 0;
 
+        processes.sort(Comparator.comparing(Proceso::getTiempoDeLLegada));
+
+        for(int i = 0; i< processes.size(); i++) {
+            int rafaga = processes.get(i).getRafaga();
+            int nuevaRafaga = 0;
+            if(rafaga > 3) {
+                nuevaRafaga = rafaga - 3;
+                rafaga = 3;
+                processes.get(i).setRafaga(3);
+            }
+            processes.get(i).setTiempoDeComienzo(Math.max(tiempoDeComienzoSiguiente, processes.get(i).getTiempoDeLLegada()));
+            processes.get(i).setTiempoFinal(processes.get(i).getTiempoDeComienzo() + rafaga);
+            processes.get(i).setTiempoDeRetorno(processes.get(i).getTiempoFinal() - processes.get(i).getTiempoDeLLegada());
+            processes.get(i).setTiempoDeEspera(processes.get(i).getTiempoDeRetorno() - rafaga);
+
+            if(nuevaRafaga > 0) {
+                processes.add(new Proceso(processes.get(i).getNombre(), processes.get(i).getTiempoFinal(), nuevaRafaga));
+            }
+            tiempoDeComienzoSiguiente = processes.get(i).getTiempoFinal();
+
+            ArrayList<String> dato = new ArrayList<>();
+            dato.add(processes.get(i).getNombre());
+            dato.add(processes.get(i).getTiempoDeLLegada()+"");
+            dato.add(processes.get(i).getRafaga()+"");
+            dato.add(processes.get(i).getTiempoDeComienzo()+"");
+            dato.add(processes.get(i).getTiempoFinal()+"");
+            dato.add(processes.get(i).getTiempoDeRetorno()+"");
+            dato.add(processes.get(i).getTiempoDeEspera()+"");
+            try {
+                datos.set(i, dato);
+            }
+            catch (java.lang.IndexOutOfBoundsException e) {
+                datos.add(i, dato);
+            }
+        }
+
+        view.loadGUI();
     }
 
     private void updateDataSJF() {
@@ -138,6 +178,9 @@ public class AppController {
         view.loadGUI();
     }
     private void updateDataFCFS() {
+        if(processesBackup != null) {
+            processes = processesBackup;
+        }
         int tiempoDeComienzoSiguiente = 0;
 
         processes.sort(Comparator.comparing(Proceso::getTiempoDeLLegada));

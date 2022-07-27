@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Proceso {
     private final String nombre;
     private final int tiempoDeLLegada;
-    private final int rafaga;
+    private int rafaga;
     private int tiempoDeComienzo;
     private int tiempoFinal;
     private int tiempoDeRetorno;
@@ -75,5 +75,9 @@ public class Proceso {
         array.add(tiempoDeRetorno+"");
         array.add(tiempoDeEspera+"");
         return array;
+    }
+
+    public void setRafaga(int i) {
+        rafaga = i;
     }
 }

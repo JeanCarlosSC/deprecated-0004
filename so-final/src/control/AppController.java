@@ -11,7 +11,8 @@ import view.AppView;
 
 public class AppController {
     private AppView view;
-    private final ArrayList<ArrayList<String>> datos;
+    private ArrayList<ArrayList<String>> datos;
+    private ArrayList<ArrayList<String>> datosBackup;
     private ArrayList<Proceso> processes;
     private ArrayList<Proceso> processesBackup;
     private Proceso enEjecucion;
@@ -101,8 +102,20 @@ public class AppController {
         }
     }
 
-    private void updateDataRR() {
-        processesBackup = (ArrayList<Proceso>) processes.clone();
+    private synchronized void updateDataRR() {
+        if(processesBackup == null) {
+            processesBackup = new ArrayList<>();
+            for (int i=0; i<processes.size(); i++) {
+                processesBackup.add(
+                    new Proceso(
+                        processes.get(i).getNombre(),
+                        processes.get(i).getTiempoDeLLegada(),
+                        processes.get(i).getRafaga()
+                    )
+                );
+            }
+            datosBackup = (ArrayList<ArrayList<String>>) datos.clone();
+        }
         int tiempoDeComienzoSiguiente = 0;
 
         processes.sort(Comparator.comparing(Proceso::getTiempoDeLLegada));
@@ -144,7 +157,11 @@ public class AppController {
         view.loadGUI();
     }
 
-    private void updateDataSJF() {
+    private synchronized void updateDataSJF() {
+        if (processesBackup != null) {
+            processes = processesBackup;
+            datos = datosBackup;
+        }
         int tiempoDeComienzoSiguiente = 0;
 
         ArrayList<Proceso> procesos= (ArrayList) processes.clone();
@@ -177,9 +194,10 @@ public class AppController {
 
         view.loadGUI();
     }
-    private void updateDataFCFS() {
+    private synchronized void updateDataFCFS() {
         if(processesBackup != null) {
             processes = processesBackup;
+            datos = datosBackup;
         }
         int tiempoDeComienzoSiguiente = 0;
 

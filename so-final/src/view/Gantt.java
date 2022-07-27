@@ -21,7 +21,6 @@ public class Gantt extends SPanel {
         time = 0;
         this.view = view;
         this.appController = appController;
-        this.processes = appController.getProcesses();
         setBounds(2, 2, 1196, 241);
         setBackground(Resource.DTII2);
     }
@@ -30,6 +29,7 @@ public class Gantt extends SPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        this.processes = appController.getProcesses();
         // grid
         int columnGap = 30;
         int rowGap = 37;

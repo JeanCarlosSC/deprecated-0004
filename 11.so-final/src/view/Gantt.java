@@ -8,8 +8,6 @@ import sRAD_java.gui.sComponent.SPanel;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
-import java.util.Random;
-import javax.swing.JPanel;
 
 public class Gantt extends SPanel {
     private AppView view;
@@ -31,9 +29,9 @@ public class Gantt extends SPanel {
 
         this.processes = appController.getProcesses();
         // grid
-        int columnGap = 30;
+        int columnGap = 25;
         int rowGap = 37;
-        for (int i = 0; i < Math.max(39, time); i++) {
+        for (int i = 0; i < Math.max(50, time); i++) {
             g.setColor(Resource.DTII5);
             g.drawLine(i*columnGap+30, 0, i*columnGap+30, getHeight());
             g.setColor(Resource.WHITE);
@@ -76,11 +74,11 @@ public class Gantt extends SPanel {
         }
 
         int width;
-        if (time<39) {
+        if (time<46) {
             width = 1196;
         }
         else {
-            width = time*35+40;
+            width = time*columnGap+40;
         }
         setSize(width, height);
 

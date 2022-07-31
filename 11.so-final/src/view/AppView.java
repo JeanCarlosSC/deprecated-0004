@@ -88,7 +88,7 @@ public class AppView extends SFrame{
                 int tiempoDeLlegada = Integer.parseInt(JOptionPane.showInputDialog("Ingrese tiempo de llegada"));
                 int rafaga = Integer.parseInt(JOptionPane.showInputDialog("Ingrese duración de la rafaga"));
                 appController.addProcess(new Proceso(name, tiempoDeLlegada, rafaga));
-                appController.updateData();
+                appController.updateData(0);
             }).start();
         });
         add(bAdd);

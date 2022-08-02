@@ -22,7 +22,7 @@ public class AppView extends SFrame{
     private SLabel lTime;
        
     public AppView(AppController controller) {
-        super(1280, 720, "Proyecto final");
+        super(1280, 720, "Priority");
 
         this.appController = controller;
 
@@ -42,30 +42,7 @@ public class AppView extends SFrame{
         loadLabels();
         updateTComponent(tData, appController.getDatos());
         loadButtons();
-        loadCombobox();
         repaint();
-    }
-
-    private void loadCombobox() {
-        String[] options = new String[3];
-        options[0] = "P1. FCFS";
-        options[1] = "P2. SJF";
-        options[2] = "P3. RR";
-        SComboBox comboBox = new SComboBox(SComboBox.DECORADO, 706, 670, 130, 32, options);/*
-        comboBox.addActionListener(e -> {
-            switch (comboBox.getSelectedIndex()) {
-                case 1:
-                    appController.setMethod(1);
-                    break;
-                case 2:
-                    appController.setMethod(2);
-                    break;
-                default:
-                    appController.setMethod(0);
-                    break;
-            }
-        });*/
-        add(comboBox);
     }
 
     private void loadButtons() {
@@ -87,8 +64,9 @@ public class AppView extends SFrame{
                 String name = JOptionPane.showInputDialog("Ingrese el nombre del proceso");
                 int tiempoDeLlegada = Integer.parseInt(JOptionPane.showInputDialog("Ingrese tiempo de llegada"));
                 int rafaga = Integer.parseInt(JOptionPane.showInputDialog("Ingrese duración de la rafaga"));
-                appController.addProcess(new Proceso(name, tiempoDeLlegada, rafaga));
-                appController.updateData(0);
+                int prioridad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la prioridad del prooeso"));
+                appController.addProcess(new Proceso(name, tiempoDeLlegada, rafaga, prioridad));
+                appController.updateData();
             }).start();
         });
         add(bAdd);

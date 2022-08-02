@@ -66,8 +66,8 @@ public class Proceso {
         this.tiempoDeComienzo = tiempoDeComienzo;
     }
 
-    public void aumentarTiempoDeBloqueo() {
-        tiempoDeBloqueo++;
+    public void sumarTiempoDeBloqueo(int tiempoDeBloqueo) {
+        this.tiempoDeBloqueo += tiempoDeBloqueo;
     }
 
     public void setTiempoFinal(int tiempoFinal) {

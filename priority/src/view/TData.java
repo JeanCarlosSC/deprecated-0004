@@ -29,4 +29,8 @@ public class TData extends TComponent{
 
         sTable = new STable(32, 62, 1194, 130, tContent, 132, 18);
     }
+
+    public void repaint() {
+        sTable.repaint();
+    }
 }

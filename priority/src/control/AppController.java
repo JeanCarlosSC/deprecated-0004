@@ -59,9 +59,6 @@ public class AppController {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            if (enEjecucion == null) {
-                break;
-            }
             currentTime++;
         }
     }
@@ -191,4 +188,23 @@ public class AppController {
         }
         new Thread(() -> run()).start();
     }
+
+    public void bloquear() {
+        if(enEjecucion != null && !blockList.isEmpty()) {
+            enEjecucion.sumarTiempoDeBloqueo(blockList.get(0).getRafaga());
+            blockList.add(enEjecucion);
+            for(int j=0; j<datos.size(); j++) {
+                if(datos.get(j).get(0).equals(enEjecucion.getNombre())) {
+                    ArrayList dato = datos.get(j);
+                    dato.set(8, enEjecucion.getTiempoDeBloqueo());
+                    datos.set(j, dato);
+                    view.getTData().updateComponent(datos);
+                    view.repaint();
+                    break;
+                }
+            }
+            enEjecucion = null;
+        }
+    }
+    
 }

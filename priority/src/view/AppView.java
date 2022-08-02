@@ -46,6 +46,12 @@ public class AppView extends SFrame{
     }
 
     private void loadButtons() {
+        SButton bBloquear = new SButton(730, 670, 100, 32, "Bloquear");
+        bBloquear.addActionListener(e -> {
+            new Thread(() -> appController.bloquear()).start();
+        });
+        add(bBloquear);
+
         SButton bStart = new SButton(1132, 670, 100, 32, "Iniciar");
         bStart.addActionListener(e -> {
             new Thread(() -> appController.restart()).start();
@@ -124,6 +130,10 @@ public class AppView extends SFrame{
             matrix.add(process.toArray());
         }
         return matrix;
+    }
+
+    public TData getTData() {
+         return tData;
     }
 
 }

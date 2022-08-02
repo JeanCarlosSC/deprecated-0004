@@ -77,7 +77,7 @@ public class AppController {
                 procesos.remove(0);
             }
             if (i == 1) {
-                procesos.sort(Comparator.comparing(Proceso::getRafaga));
+                procesos.sort(Comparator.comparing(Proceso::getPrioridad).reversed());
             }
             procesos.get(0).setTiempoDeComienzo(Math.max(tiempoDeComienzoSiguiente, procesos.get(0).getTiempoDeLLegada()));
             procesos.get(0).setTiempoFinal(procesos.get(0).getTiempoDeComienzo() + procesos.get(0).getRafaga());
@@ -96,7 +96,12 @@ public class AppController {
             dato.add(procesos.get(0).getTiempoDeRetorno() + "");
             dato.add(procesos.get(0).getTiempoDeEspera() + "");
             dato.add(procesos.get(0).getTiempoDeBloqueo() + "");
-            datos.set(i, dato);
+            for(int j=0; j<datos.size(); j++) {
+                if(datos.get(j).get(0).equals(dato.get(0))) {
+                    datos.set(j, dato);
+                    break;
+                }
+            }
         }
 
         view.loadGUI();
@@ -122,6 +127,7 @@ public class AppController {
     private void addToExecutionList() {
         if (enEjecucion == null && !blockList.isEmpty()) {
             while (!blockList.isEmpty()) {
+                blockList.sort(Comparator.comparing(Proceso::getPrioridad).reversed());
                 if (blockList.get(0).getTiempoFinal() != 0 && blockList.get(0).getTiempoFinal() > currentTime) {
                     enEjecucion = blockList.get(0);
                     blockList.remove(0);

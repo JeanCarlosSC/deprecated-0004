@@ -31,9 +31,9 @@ public class AppController {
         showGUI();
 
         addProcess(new Proceso("A", 0, 8, 2));
-        addProcess(new Proceso("B", 1, 4, 3));
+        addProcess(new Proceso("B", 1, 4, 4));
         addProcess(new Proceso("C", 2, 9, 7));
-        addProcess(new Proceso("D", 3, 5, 4));
+        addProcess(new Proceso("D", 3, 5, 1));
         addProcess(new Proceso("E", 4, 2, 5));
 
         run();
@@ -74,7 +74,7 @@ public class AppController {
                 procesos.remove(0);
             }
             if (i == 1) {
-                procesos.sort(Comparator.comparing(Proceso::getPrioridad).reversed());
+                procesos.sort(Comparator.comparing(Proceso::getPrioridad));
             }
             procesos.get(0).setTiempoDeComienzo(Math.max(tiempoDeComienzoSiguiente, procesos.get(0).getTiempoDeLLegada()));
             procesos.get(0).setTiempoFinal(procesos.get(0).getTiempoDeComienzo() + procesos.get(0).getRafaga());
@@ -124,7 +124,7 @@ public class AppController {
     private void addToExecutionList() {
         if (enEjecucion == null && !blockList.isEmpty()) {
             while (!blockList.isEmpty()) {
-                blockList.sort(Comparator.comparing(Proceso::getPrioridad).reversed());
+                blockList.sort(Comparator.comparing(Proceso::getPrioridad));
                 if (blockList.get(0).getTiempoFinal() != 0 && blockList.get(0).getTiempoFinal() > currentTime) {
                     enEjecucion = blockList.get(0);
                     blockList.remove(0);

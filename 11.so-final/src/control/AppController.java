@@ -54,7 +54,7 @@ public class AppController {
 
             view.step();
             try {
-                Thread.sleep(500);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

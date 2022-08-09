@@ -1,28 +1,48 @@
 package model;
 
-import java.util.ArrayList;
-
-import java.util.ArrayList;
-
 public class Priority {
-    Procesador colaPrioridad;
-    Nodo Fcfs = new Nodo(1);
-    Nodo Sjf = new Nodo(2);
-    Nodo RR = new Nodo(3);
+    int prioridad;
+    Cola fcfs;
+    Cola sjf;
+    Cola rr;
     
-    public Priority(){
-        colaPrioridad = new Procesador();
-        colaPrioridad.insertar(Fcfs);
-        colaPrioridad.insertar(Sjf);
-        colaPrioridad.insertar(RR);
+    public Priority() {
+        fcfs = new Cola();
+        sjf = new Cola();
+        rr = new Cola();
     }
     
-    public ArrayList getordenPrioridad(){
-        ArrayList orden = new ArrayList();
-        orden.add(colaPrioridad.inicioCola);
-        orden.add(colaPrioridad.inicioCola.siguiente);
-        orden.add(colaPrioridad.finalCola);
-        return  orden;
+    public void agregarProcesoAFCFS(Nodo proceso) {
+        fcfs.insertar(proceso);
+    }
+    
+    public void agregarProcesoASJF(Nodo proceso) {
+        sjf.insertar(proceso);
+    }
+    
+    public void agregarProcesoARR(Nodo proceso) {
+        rr.insertar(proceso);
+    }
+    
+    public Nodo getEnEjecucion() {
+        if(fcfs.noEstaVacio()) {
+            prioridad = 3;
+            fcfs.organizar(prioridad);
+            return fcfs.obtenerSiguienteEnListaDeBloqueo();
+        }
+        else if(sjf.noEstaVacio()) {
+            prioridad = 2;
+            sjf.organizar(prioridad);
+            return sjf.obtenerSiguienteEnListaDeBloqueo();
+        }
+        else if(rr.noEstaVacio()) {
+            prioridad = 1;
+            rr.organizar(prioridad);
+            return rr.obtenerSiguienteEnListaDeBloqueo();
+        }
+        else {
+            return null;
+        }
     }
     
 }

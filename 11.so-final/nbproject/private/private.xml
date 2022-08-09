@@ -2,6 +2,12 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/jean/repository/sistemas%20operativos/11.so-final/src/control/AppController.java</file>
+            <file>file:/C:/jean/repository/sistemas%20operativos/11.so-final/src/control/Launcher.java</file>
+            <file>file:/C:/jean/repository/sistemas%20operativos/11.so-final/src/model/Cola.java</file>
+            <file>file:/C:/jean/repository/sistemas%20operativos/11.so-final/src/model/Priority.java</file>
+            <file>file:/C:/jean/repository/sistemas%20operativos/11.so-final/src/model/Proceso.java</file>
+        </group>
     </open-files>
 </project-private>
